@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>hero-existing</title>
+<style>
+/* Layout: exact replica of simonalcock.ie desktop hero (measured at 1440×900) —
+   full-height rounded card with cover photo, 10/12 centred column, 5 role tabs, 50/60 headline, scroll mouse. */
+@font-face { font-family: "EudoxusSans-Medium"; src: url("https://simonalcock.ie/wp-content/uploads/custom_fonts/EudoxusSans-Medium.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "AeonikFono-Regular"; src: url("https://simonalcock.ie/wp-content/uploads/custom_fonts/AeonikFono-Regular.otf") format("opentype"); font-weight: 400; font-display: swap; }
+
+:root {
+  color-scheme: light;
+  --page: #fefefe;            /* body */
+  --frame: #f4f4f6;           /* .thb-borders */
+  --card: #ffffff;            /* row fill under photo */
+  --title: #333333;           /* h1 / h5 */
+  --tab-text: #666666;        /* tab label */
+  --tab-bg: #f7f7f7;          /* inactive tab: #fff mixed 3% black */
+  --tab-bg-hover: #f0f0f0;    /* hover/focus: 6% black */
+  --tab-bg-active: #ffffff;
+  --ink: #1f1f1f;             /* scroll mouse */
+  --ink-40: rgba(31,31,31,.4);
+  --ink-80: rgba(31,31,31,.8);
+  --code-text: #0a0a0a; --code-bg: #e6e6e6; --code-border: #cacaca;
+  --important: #65affe;
+  --font-display: "EudoxusSans-Medium", Helvetica, Arial, sans-serif;
+  --font-body: Helvetica, "system-ui", -apple-system, Roboto, "Lucida Sans", sans-serif;
+  --font-mono: Consolas, "Liberation Mono", Courier, monospace;
+  --font-fono: "AeonikFono-Regular", ui-monospace, monospace;
+  --ease-theme: cubic-bezier(0.37, 0.31, 0.2, 0.85);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--page);
+  color: rgb(80,80,80);
+  font-family: var(--font-body);
+  font-size: 16px; line-height: 1.4; letter-spacing: 0.24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Fixed page frame (.thb-borders) */
+.frame {
+  position: fixed; inset: 0; z-index: 999; pointer-events: none;
+  border: 0 solid var(--frame);
+}
+@media (min-width: 641px) { .frame { border-width: 25px; } }
+
+/* Hero row */
+.hero {
+  position: relative;
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
+  width: 100%; min-height: 100vh;
+  background: var(--card) url("simon-alcock-profile-image-wide.jpg") center center / cover no-repeat;
+  border-radius: 30px;
+}
+.hero__col { width: 100%; padding: 0 16px; }
+@media (min-width: 641px) { .hero__col { width: 83.3333%; max-width: 83.3333%; padding: 0 32px 0 0; } }
+.hero__space { height: 32px; }
+@media (min-width: 641px) { .hero__space { height: 160px; } }
+
+/* Entrance: column rises 30px and fades in */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__col { animation: rise 1s var(--ease-theme) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
+}
+
+/* Tabs */
+.tabs { position: relative; z-index: 3; margin: 0 0 32px; }
+.tabs__list { display: flex; flex-wrap: wrap; list-style: none; margin: -4px; padding: 0; }
+.tabs__item { margin: 4px; }
+.tab {
+  display: block;
+  padding: 14px 20px;
+  border: 3px solid transparent; border-radius: 5px;
+  background: var(--tab-bg); color: var(--tab-text);
+  font: 400 14px/14px var(--font-display); letter-spacing: -0.14px;
+  cursor: pointer;
+  transition: background .2s ease-in-out, color .2s ease-in-out, border .2s ease-in-out;
+}
+.tab:hover, .tab:focus { background: var(--tab-bg-hover); outline: none; }
+.tab:focus-visible { border-color: var(--ink-40); }
+.tab[aria-selected="true"] { background: var(--tab-bg-active); cursor: default; }
+
+/* Panels */
+.panel { padding: 14px 0; overflow: hidden; min-height: 10px; }
+.panel h1, .panel h5 {
+  margin: 0; color: var(--title);
+  font-family: var(--font-display); font-size: 50px; line-height: 60px; letter-spacing: normal;
+}
+.panel h1 { font-weight: 500; }
+.panel h5 { font-weight: 400; margin-bottom: 20px; }
+.panel h5:last-child { margin-bottom: 0; }
+.panel code {
+  font-family: var(--font-mono); font-size: 1em; font-weight: 400;
+  color: var(--code-text); background: var(--code-bg);
+  border: 1px solid var(--code-border); padding: 2px 5px 1px;
+}
+.panel .important { color: var(--important); font-family: var(--font-fono); }
+.panel .selector { color: var(--important); }
+.panel .css > span { display: block; }
+.panel .css .decl { padding-left: 1.2em; }
+@media (max-width: 640px) {
+  .panel h1, .panel h5 { font-size: 32px; line-height: 40px; }
+}
+
+/* Scroll mouse (.scroll-bottom.style2) */
+.mouse {
+  position: absolute; z-index: 30; left: 50%; bottom: 15px;
+  width: 30px; height: 50px; margin-left: -15px; padding: 0;
+  border: 2px solid var(--ink-40); border-radius: 14px; background: none;
+  cursor: pointer; transform: scale(.75);
+  transition: all .25s var(--ease-theme);
+}
+@media (min-width: 641px) { .mouse { bottom: 88px; transform: scale(1); } }
+.mouse:hover, .mouse:focus-visible { border-color: var(--ink-80); outline: none; }
+.mouse span {
+  position: absolute; top: 8px; left: 12px;
+  width: 2px; height: 4px; border-radius: 4px; background: var(--ink);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .mouse span { animation: wheel 2s ease infinite; }
+  @keyframes wheel { 0%, 100% { height: 5px; } 50% { height: 24px; } }
+}
+
+/* Placeholder for the next section (scroll target only) */
+.next {
+  min-height: 40vh; display: grid; place-items: center;
+  padding-block: 64px; padding-inline: 16px;
+  color: var(--tab-text); font: 400 14px/1 var(--font-display); letter-spacing: -0.14px;
+}
+</style>
+</head>
+<body>
+<div class="frame" aria-hidden="true"></div>
+
+<section class="hero" aria-label="Introduction">
+  <div class="hero__col">
+    <div class="hero__space"></div>
+
+    <div class="tabs">
+      <ul class="tabs__list" role="tablist" aria-label="Who is this for?">
+        <li class="tabs__item" role="presentation"><button class="tab" role="tab" id="tab-everyone" aria-controls="everyone" aria-selected="true">For everyone</button></li>
+        <li class="tabs__item" role="presentation"><button class="tab" role="tab" id="tab-leaders" aria-controls="leaders" aria-selected="false" tabindex="-1">For Design Leaders</button></li>
+        <li class="tabs__item" role="presentation"><button class="tab" role="tab" id="tab-designers" aria-controls="designers" aria-selected="false" tabindex="-1">For UX &amp; Product Designers</button></li>
+        <li class="tabs__item" role="presentation"><button class="tab" role="tab" id="tab-managers" aria-controls="managers" aria-selected="false" tabindex="-1">For Product Managers</button></li>
+        <li class="tabs__item" role="presentation"><button class="tab" role="tab" id="tab-developers" aria-controls="developers" aria-selected="false" tabindex="-1">For Developers</button></li>
+      </ul>
+    </div>
+
+    <div class="panel" role="tabpanel" id="everyone" aria-labelledby="tab-everyone">
+      <h1>I’m a Product Designer from Dublin with over 12 years experience and a background in financial services, brand, web &amp; graphic design. Now specialising in conversion optimisation, accessibility compliance and governance of a visual &amp; behavioural consistency.</h1>
+    </div>
+    <div class="panel" role="tabpanel" id="leaders" aria-labelledby="tab-leaders" hidden>
+      <h1>I’m a results-driven designer who can identify, define and visualise innovation opportunities. I believe in the power of quality and collaborate with subject matter experts and decision-makers to ensure digital products meet business goals.</h1>
+    </div>
+    <div class="panel" role="tabpanel" id="designers" aria-labelledby="tab-designers" hidden>
+      <h1>I’m a naturally divergent thinker and creative problem solver who can craft innovative solutions. From process to pixels, I’ll collaborate with you, learn from you and help make something we can be proud of.</h1>
+    </div>
+    <div class="panel" role="tabpanel" id="managers" aria-labelledby="tab-managers" hidden>
+      <h1>I bring end-to-end product experience, from vision and strategy to discovery, design and delivery. I’ll partner closely with you to create the highest impact possible.</h1>
+    </div>
+    <div class="panel" role="tabpanel" id="developers" aria-labelledby="tab-developers" hidden>
+      <h5 class="css" aria-label="A CSS rule for Simon: role designer, engineer false, code claude, collaboration strong, results delivered, important.">
+        <span aria-hidden="true"><span class="selector">.simon</span> {</span>
+        <span class="decl" aria-hidden="true">role: designer;</span>
+        <span class="decl" aria-hidden="true">engineer: false;</span>
+        <span class="decl" aria-hidden="true">code: claude;</span>
+        <span class="decl" aria-hidden="true">collaboration: strong;</span>
+        <span class="decl" aria-hidden="true">results: delivered <span class="important">!important</span>;</span>
+        <span aria-hidden="true">}</span>
+      </h5>
+    </div>
+  </div>
+
+  <button class="mouse" type="button" aria-label="Scroll to next section"><span></span></button>
+</section>
+
+<div class="next" id="next">Next section</div>
+
+<script>
+(() => {
+  const tabs = [...document.querySelectorAll('[role="tab"]')];
+  const select = (tab, focus) => {
+    tabs.forEach(t => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', on);
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) tab.focus();
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => select(t));
+    t.addEventListener('keydown', e => {
+      const map = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 };
+      if (e.key in map) { e.preventDefault(); select(tabs[(map[e.key] + tabs.length) % tabs.length], true); }
+    });
+  });
+  const fromHash = tabs.find(t => '#' + t.getAttribute('aria-controls') === location.hash);
+  if (fromHash) select(fromHash);
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelector('.mouse').addEventListener('click', () => {
+    document.getElementById('next').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+  });
+})();
+</script>
+</body>
+</html>
